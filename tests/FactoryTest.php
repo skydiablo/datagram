@@ -33,6 +33,18 @@ class FactoryTest extends TestCase
         $this->assertInstanceOf('React\EventLoop\LoopInterface', $loop);
     }
 
+    public function testCtorThrowsForInvalidLoop()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Argument #1 ($loop) expected null|React\EventLoop\LoopInterface');
+        new Factory('loop');
+    }
+
+    public function testCtorThrowsForInvalidResolver()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Argument #2 ($resolver) expected null|React\Dns\Resolver\ResolverInterface');
+        new Factory(null, 'resolver');
+    }
+
     public function testCreateClient()
     {
         $this->resolver->expects($this->never())->method('resolve');

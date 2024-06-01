@@ -18,6 +18,15 @@ class SocketTest extends TestCase
         $this->factory = new \React\Datagram\Factory($this->loop, $this->createResolverMock());
     }
 
+    public function testCtorThrowsForInvalidBuffer()
+    {
+        $socket = stream_socket_server('udp://127.0.0.1:0', $errno, $errstr, STREAM_SERVER_BIND);
+        assert(is_resource($socket));
+
+        $this->setExpectedException('InvalidArgumentException', 'Argument #3 ($buffer) expected null|React\Datagram\Buffer');
+        new Socket($this->loop, $socket, 'buffer');
+    }
+
     /**
      * @doesNotPerformAssertions
      */
